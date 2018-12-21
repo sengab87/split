@@ -11,11 +11,12 @@ import UIKit
 class MasterViewController: UITableViewController {
 
     var detailViewController: ImagePresentationVC? = nil
-    var objects = [Any]()
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.tableView.tableFooterView = UIView()
+        self.tableView.tableHeaderView = UIView()
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -23,17 +24,16 @@ class MasterViewController: UITableViewController {
 
     // MARK: - Segues
 
-    /*override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
             if let indexPath = tableView.indexPathForSelectedRow {
-                let object = objects[indexPath.row] as! NSDate
-                let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
-                controller.detailItem = object
+                let controller = (segue.destination as! UINavigationController).topViewController as! ImagePresentationVC
+                controller.image = imageArray[indexPath.row]
                 controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
             }
         }
-    }*/
+    }
 
     // MARK: - Table View
 
@@ -52,6 +52,14 @@ class MasterViewController: UITableViewController {
         cell.backgroundColor = colorsArray[indexPath.row]
         print(cell.backgroundColor)
         return cell
+    }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        var height = self.tableView.frame.height
+        var nav = self.navigationController?.navigationBar.frame.height
+        return (height - nav! - UIApplication.shared.statusBarFrame.height) / CGFloat(namesArrays.count)
     }
 
 }
